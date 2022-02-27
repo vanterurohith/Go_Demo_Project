@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	routers "rohith.com/Routers"
 	"rohith.com/Routers/database"
-	"rohith.com/routers"
 )
 
 func main() {

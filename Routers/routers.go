@@ -1,9 +1,11 @@
 package routers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"rohith.com/Routers/database"
 )
 
 type user struct {
@@ -21,18 +23,22 @@ var users = []user{
 }
 
 func GetUsers(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, users)
+
+	var newuserInfo []user
+	database.DB.Find(&newuserInfo)
+	c.IndentedJSON(http.StatusOK, newuserInfo)
 }
 
 func PostUsers(c *gin.Context) {
 
 	var newUser user
 
-	if err := c.BindJSON(&newUser); err != nil {
-		return
+	if err := c.BindJSON(&newUser); err == nil {
+		fmt.Printf("obj", newUser)
+	} else {
+		fmt.Printf("error here", err)
 	}
-
-	users = append(users, newUser)
+	database.DB.Create(&newUser)
 	c.IndentedJSON(http.StatusCreated, newUser)
 
 }
@@ -40,11 +46,12 @@ func PostUsers(c *gin.Context) {
 func GetUsersById(c *gin.Context) {
 	id := c.Param("id")
 
-	for _, a := range users {
-		if a.ID == id {
-			c.IndentedJSON(http.StatusOK, a)
-			return
-		}
+	var newUserId user
+	idresult := database.DB.Where("id=?", id).First(&newUserId)
+	if idresult.Error != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "user not found"})
+	} else {
+		c.IndentedJSON(http.StatusOK, newUserId)
 	}
-	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
+
 }
