@@ -9,21 +9,21 @@ import (
 )
 
 type user struct {
-	ID        string `json:"id"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	Email     string `json:"email"`
+	ID         string `json:"id"`
+	Name       string `json:"name"`
+	Email      string `json:"email"`
+	Department string `json:"department"`
 }
 
 var users = []user{
-	{ID: "1", FirstName: "Rohith", LastName: "Vanteru", Email: "vanterurohith@gmail.com"},
-	{ID: "2", FirstName: "Rahul", LastName: "TK", Email: "rahul@gmail.com"},
-	{ID: "3", FirstName: "Sujith", LastName: "V", Email: "sujith@gmail.com"},
-	{ID: "4", FirstName: "Kaushik", LastName: "T", Email: "kaushik@gmail.com"},
+	{ID: "1", Name: "Rohith", Email: "vanterurohith@gmail.com", Department: "CSE"},
+	{ID: "2", Name: "Rahul", Email: "rahul@gmail.com", Department: "IT"},
+	{ID: "3", Name: "Sujith", Email: "sujith@gmail.com", Department: "CSE"},
+	{ID: "4", Name: "Kaushik", Email: "kaushik@gmail.com", Department: "ECE"},
 }
 
 func GetUsers(c *gin.Context) {
-
+	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	var newuserInfo []user
 	database.DB.Find(&newuserInfo)
 	c.IndentedJSON(http.StatusOK, newuserInfo)

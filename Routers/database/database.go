@@ -12,10 +12,10 @@ var DB *gorm.DB
 type User struct {
 	gorm.Model
 
-	ID        string
-	FirstName string
-	LastName  string
-	Email     string
+	ID         string
+	Name       string
+	Email      string
+	Department string
 }
 
 func setup(db *gorm.DB) {
@@ -25,9 +25,9 @@ func setup(db *gorm.DB) {
 
 func seed(db *gorm.DB) {
 	users := []User{
-		{ID: "1", FirstName: "rohith", LastName: "Vanteru", Email: "vanterurohith@gmail.com"},
-		{ID: "2", FirstName: "rahul", LastName: "TK", Email: "rahultk@gmail.com"},
-		{ID: "3", FirstName: "sujith", LastName: "V", Email: "sujithv@gmail.com"},
+		{ID: "1", Name: "rohith", Email: "vanterurohith@gmail.com", Department: "CSE"},
+		{ID: "2", Name: "rahul", Email: "rahultk@gmail.com", Department: "IT"},
+		{ID: "3", Name: "sujith", Email: "sujithv@gmail.com", Department: "ECE"},
 	}
 	for _, u := range users {
 		db.Create(&u)
